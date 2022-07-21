@@ -1,37 +1,97 @@
-## Welcome to GitHub Pages
+<html><head>
+    <title>Bokeh Example</title>
+    <meta charset="iso-8859-1">
+    <link rel="icon" type="image/x-icon" href="./favicon.png">
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.4.2.js"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-2.4.2.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.4.2.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.4.2.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-2.4.2.min.js"></script>
 
-You can use the [editor on GitHub](https://github.com/colbygogan/colbygogan/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+    <script type="text/javascript">
+        Bokeh.set_log_level("info");
+    </script>
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    </head>
+    
+        <py-env>
+- bokeh
+        </py-env>
+        <h1>Bokeh Example</h1>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+    <body>
+<header style = "height: 100px; width: 100%; background-color: #607D8B;" >
+<h1 style=" color: #fff; text-align: center; padding-top: 25px; font-size: 30px;" > Header Section </h1>
+</header>
+<nav style = "background-color: #607d8b9c;" >
+<ul>
+<li> <a href = "#"> Navigation Link1 </a> </li>
+<li> <a href = "#"> Navigation Link2 </a> </li>
+<li> <a href = "#"> Navigation Link3 </a> </li>
+</ul>
+</nav>
+<div class = "main">
+<section>
+<h2> Section Part </h2>
+<div id="chart"></div>
+<p> Some Text </p>
+</section>
+<article>
+<h2> </h2>
+<p> Some Detailed Text </p>
+</article>
+<aside>
+<h2> Sidebar Part </h2>
+<p>  </p>
+</aside>
+</div>
+<details>
+<summary> </summary>
+<p></p>
+</details>
+<footer style = " height: 100px; background-color:#607D8B; width: 100%; text-align: center;">
+<h3 style = " color: #fff; text-align: center; padding-top: 10px; font-size: 30px; " >Footer Section</h3>
+<p></p>
+</footer>
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-```markdown
-Syntax highlighted code block
+    <py-script>
 
-# Header 1
-## Header 2
-### Header 3
+import json 
+import pyodide 
+from js import Bokeh, console, JSON
+from bokeh.embed import json_item
+from bokeh.io import output_file, show
+from bokeh.layouts import gridplot
+from bokeh.plotting import figure
 
-- Bulleted
-- List
+<!-- output_file("layout_grid.html") -->
 
-1. Numbered
-2. List
+x = list(range(100))
+y0 = x
+y1 = [190 - i for i in x]
+y2 = [abs(i - 500) for i in x]
 
-**Bold** and _Italic_ and `Code` text
+# create three plots
+s1 = figure(background_fill_color="#fafafa")
+s1.circle(x, y0, size=12, alpha=0.8, color="#53777a")
 
-[Link](url) and ![Image](src)
-```
+s2 = figure(background_fill_color="#fafafa")
+s2.triangle(x, y1, size=12, alpha=0.8, color="#c02942")
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+s3 = figure(background_fill_color="#fafafa")
+s3.square(x, y2, size=12, alpha=0.8, color="#d95b43")
 
-### Jekyll Themes
+# make a grid
+grid = gridplot([[s1, s2], [None, s3]], width=600, height=900)
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/colbygogan/colbygogan/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+p_json = json.dumps(json_item(grid, "chart"))
+Bokeh.embed.embed_item(JSON.parse(p_json))
 
-### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+    </py-script>
+
+</body>
+</html>
